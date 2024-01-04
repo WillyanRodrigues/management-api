@@ -32,5 +32,7 @@ public class Customer {
         this.dateOfBirth = dateOfBirth;
         this.documentNumber = documentNumber;
         this.lastUpdate = LocalDate.now();
+
+
     }
 }
