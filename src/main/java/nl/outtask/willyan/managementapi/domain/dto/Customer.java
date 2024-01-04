@@ -6,6 +6,11 @@ import lombok.Data;
 @Data
 public class Customer {
 
+    /**
+     * Not mandatory for being sent
+     */
+    private Integer id;
+
     private String name;
 
     @JsonProperty("date_of_birth")
@@ -15,3 +20,5 @@ public class Customer {
     private String documentNumber;
 
 }
+
+

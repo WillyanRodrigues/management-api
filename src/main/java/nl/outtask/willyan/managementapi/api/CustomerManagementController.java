@@ -1,7 +1,10 @@
 package nl.outtask.willyan.managementapi.api;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import nl.outtask.willyan.managementapi.api.usecase.CustomerManagement;
 import nl.outtask.willyan.managementapi.domain.dto.Customer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,20 +15,24 @@ import java.net.URI;
 @Slf4j
 public class CustomerManagementController {
 
-    private Customer customer;
+    @Autowired
+    private CustomerManagement customerManagement;
 
     @PostMapping
     private ResponseEntity<Void> createCustomer(@RequestBody final Customer customer) {
-      log.info("Customer is {}", customer.toString());
-      this.customer = customer;
-      return ResponseEntity.created(URI.create("/customer/1")).build();
+      log.info("Creating customer {}", customer.toString());
+      var cust = this.customerManagement.createCustomer(customer);
+      log.info("Customer {} is created", customer.toString());
+      return ResponseEntity.created(URI.create(String.format("/customer/%d", cust.getId()))).build();
     }
 
-    @GetMapping("/1")
-    private ResponseEntity<Customer> findCustomer() {
-        if (null != customer) {
-            return ResponseEntity.ok(customer);
-        }
-        return ResponseEntity.notFound().build();
+    @GetMapping("/{id}")
+    private ResponseEntity<Customer> findCustomer(final @PathVariable(name = "id") Integer id) {
+        log.info("Retrieving customer with ID {}", id);
+        var customer = this.customerManagement.retrieveCustomer(id);
+        log.info("Customer is {}", customer.orElse(null));
+        return customer
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }
