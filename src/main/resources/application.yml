@@ -2,7 +2,7 @@ server:
   port: 80
 spring:
   datasource:
-    url: jdbc:sqlserver://10.0.1.10:1433;database=willyan-webapp-db;encrypt=true;trustServerCertificate=true;loginTimeout=30;
+    url: jdbc:sqlserver://20240109-willyan.database.windows.net:1433;database=managementdb;user=willyan@20240109-willyan;password=Selene@032022@1;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;
     username: willyan
     password: Selene@032022@1
   jpa:
